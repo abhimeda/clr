@@ -46,7 +46,6 @@ steps:
     make -j4
     
     cd "$CLR_DIR"
-    ls
     cd rocclr
     ls
     # mkdir -p build; cd build
