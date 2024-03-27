@@ -15,6 +15,11 @@ resources:
     endpoint: abhimeda
     name: abhimeda/hipother
     ref: rocm-6.0.x
+  - repository: hip_tests # The name used to reference this repository in the checkout step
+    type: github
+    endpoint: abhimeda
+    name: abhimeda/hip-tests
+    ref: rocm-6.0.x
   
 trigger:
 - rocm-6.0.x
@@ -26,6 +31,30 @@ steps:
 - checkout: hip_repo
 - checkout: hipcc_repo
 - checkout: hipother_repo
+- checkout: hip_tests
 - script: |
     ls
-  displayName: 'List directories'
+    export CLR_DIR="$(readlink -f clr)"
+    export HIP_DIR="$(readlink -f hip)"
+    export HIP_OTHER="$(readlink -f hipother)"
+    export HIPCC_DIR="$(readlink -f HIPCC)"
+    export HIPTESTS_DIR="$(readlink -f hip-tests)"
+
+    cd "$HIPCC_DIR"
+    mkdir -p build; cd build
+    cmake ..
+    make -j4
+    
+    cd "$CLR_DIR"
+    mkdir -p build; cd build
+    cmake -DHIP_COMMON_DIR=$HIP_DIR -DHIP_PLATFORM=amd -DCMAKE_PREFIX_PATH="/opt/rocm/" -DCMAKE_INSTALL_PREFIX=$PWD/install -DHIPCC_BIN_DIR=$HIPCC_DIR/build -DHIP_CATCH_TEST=0 -DCLR_BUILD_HIP=ON -DCLR_BUILD_OCL=OFF ..
+    make -j$(nproc)
+    echo "rocm" | sudo -S make install
+
+    cd "$HIPTESTS_DIR"
+    mkdir -p build; cd build
+    cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
+    make -j$(nproc) build_tests # build tests
+    cd catch_tests && ctest # to run all tests.
+
+  displayName: 'Building HIP'
