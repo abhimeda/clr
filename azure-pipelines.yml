@@ -45,10 +45,10 @@ steps:
     echo $HIPCC_DIR
     echo $HIPTESTS_DIR
 
-    # cd "$HIPCC_DIR"
-    # mkdir -p build; cd build
-    # cmake ..
-    # make -j4
+    cd "$HIPCC_DIR"
+    mkdir -p build; cd build
+    cmake ..
+    make -j4
     
     # cd "$CLR_DIR"
     # mkdir -p build; cd build
