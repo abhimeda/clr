@@ -45,6 +45,7 @@ steps:
     echo $HIPCC_DIR
     echo $HIPTESTS_DIR
 
+    echo $PATH
     which clang
 
     # cd "$HIPCC_DIR"
