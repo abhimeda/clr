@@ -8,7 +8,7 @@ resources:
   - repository: hipcc_repo # The name used to reference this repository in the checkout step
     type: github
     endpoint: abhimeda
-    name: abhimeda/HIP
+    name: abhimeda/HIPCC
     ref: rocm-6.0.x
   - repository: hipother_repo # The name used to reference this repository in the checkout step
     type: github
