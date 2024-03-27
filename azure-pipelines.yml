@@ -1,0 +1,31 @@
+resources:
+  repositories:
+  - repository: hip_repo # The name used to reference this repository in the checkout step
+    type: github
+    endpoint: abhimeda
+    name: abhimeda/HIP
+    ref: rocm-6.0.x
+  - repository: hipcc_repo # The name used to reference this repository in the checkout step
+    type: github
+    endpoint: abhimeda
+    name: abhimeda/HIP
+    ref: rocm-6.0.x
+  - repository: hipother_repo # The name used to reference this repository in the checkout step
+    type: github
+    endpoint: abhimeda
+    name: abhimeda/hipother
+    ref: rocm-6.0.x
+  
+trigger:
+- rocm-6.0.x
+
+pool: NV31
+
+steps:
+- checkout: self
+- checkout: hip_repo
+- checkout: hipcc_repo
+- checkout: hipother_repo
+- script: |
+    ls
+  displayName: 'List directories'
