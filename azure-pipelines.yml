@@ -1,20 +1,24 @@
 resources:
   repositories:
+ 
   - repository: hip_repo # The name used to reference this repository in the checkout step
     type: github
     endpoint: abhimeda
     name: abhimeda/HIP
     ref: rocm-6.0.x
+ 
   - repository: hipcc_repo # The name used to reference this repository in the checkout step
     type: github
     endpoint: abhimeda
     name: abhimeda/HIPCC
     ref: rocm-6.0.x
+ 
   - repository: hipother_repo # The name used to reference this repository in the checkout step
     type: github
     endpoint: abhimeda
     name: abhimeda/hipother
     ref: rocm-6.0.x
+ 
   - repository: hip_tests # The name used to reference this repository in the checkout step
     type: github
     endpoint: abhimeda
@@ -33,6 +37,7 @@ steps:
 - checkout: hipother_repo
 - checkout: hip_tests
 - script: |
+    
     ls
     export CLR_DIR="$(readlink -f clr)"
     export HIP_DIR="$(readlink -f HIP)"
@@ -45,10 +50,8 @@ steps:
     cmake ..
     make -j4
     
-    cd "$HIP_DIR"
-    cat VERSION
     cd "$CLR_DIR"
-    ls
+    mkdir -p build; cd build
     cmake -DHIP_COMMON_DIR=$HIP_DIR -DHIP_PLATFORM=amd -DCMAKE_PREFIX_PATH="/opt/rocm/" -DCMAKE_INSTALL_PREFIX=$PWD/install -DHIPCC_BIN_DIR=$HIPCC_DIR/build -DHIP_CATCH_TEST=0 -DCLR_BUILD_HIP=ON -DCLR_BUILD_OCL=OFF ..
     make -j$(nproc)
     echo "rocm" | sudo -S make install
