@@ -65,7 +65,7 @@ jobs:
     steps:
     - checkout: none
     - script: |
-          ls
+          pwd
           # cd "$HIPTESTS_DIR"
           # mkdir -p build; cd build
           # cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
