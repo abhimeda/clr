@@ -64,17 +64,15 @@ jobs:
     timeoutInMinutes: 60
     steps:
     - checkout: none
-    - download: none
-     
     - script: |
-          ls $(System.DefaultWorkingDirectory)
+          ls
           # cd "$HIPTESTS_DIR"
           # mkdir -p build; cd build
           # cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
           # make -j$(nproc) build_tests # build tests
           # cd catch_tests && ctest # to run all tests.
 
-#   displayName: 'Building HIP'
+      displayName: 'Tests'
 
 
 # pool: NV31
