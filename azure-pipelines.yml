@@ -59,6 +59,7 @@ jobs:
 
   - job: Running_Tests
     displayName: "Running Tests"
+    dependsOn: Building_HIP
     pool: NV31
     timeoutInMinutes: 60
     steps:
