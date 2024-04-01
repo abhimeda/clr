@@ -93,6 +93,7 @@ trigger:
 pool: NV31
 
 steps:
+- script: sudo rm -rf *
 - checkout: self
 - checkout: hip_repo
 - checkout: hipcc_repo
