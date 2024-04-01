@@ -77,7 +77,7 @@ jobs:
           mkdir -p build; cd build
           cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
           make -j$(nproc) build_tests # build tests
-          cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded"
+          cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded|Unit_hipHostRegister_Memcpy|Unit_printf_flags"
       displayName: 'Tests'
     - task: PublishTestResults@2
       inputs:
