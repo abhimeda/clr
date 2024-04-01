@@ -28,104 +28,106 @@ resources:
 trigger:
 - rocm-6.0.x
 
-jobs:
-  # - job: Building_HIP
-  #   displayName: "Building HIP"
-  #   pool: NV31
-  #   timeoutInMinutes: 60
-  #   steps:
-  #     - checkout: self
-  #     - checkout: hip_repo
-  #     - checkout: hipcc_repo
-  #     - checkout: hipother_repo
-  #     - checkout: hip_tests
-  #     - script: |
-  #         pwd
-  #         export CLR_DIR="$(readlink -f clr)"
-  #         export HIP_DIR="$(readlink -f HIP)"
-  #         export HIP_OTHER="$(readlink -f hipother)"
-  #         export HIPCC_DIR="$(readlink -f HIPCC)"
-  #         export HIPTESTS_DIR="$(readlink -f hip-tests)"
+# jobs:
+#   # - job: Building_HIP
+#   #   displayName: "Building HIP"
+#   #   pool: NV31
+#   #   timeoutInMinutes: 60
+#   #   steps:
+#   #     - checkout: self
+#   #     - checkout: hip_repo
+#   #     - checkout: hipcc_repo
+#   #     - checkout: hipother_repo
+#   #     - checkout: hip_tests
+#   #     - script: |
+#   #         pwd
+#   #         export CLR_DIR="$(readlink -f clr)"
+#   #         export HIP_DIR="$(readlink -f HIP)"
+#   #         export HIP_OTHER="$(readlink -f hipother)"
+#   #         export HIPCC_DIR="$(readlink -f HIPCC)"
+#   #         export HIPTESTS_DIR="$(readlink -f hip-tests)"
           
-  #         cd "$HIPCC_DIR"
-  #         mkdir -p build; cd build
-  #         cmake ..
-  #         make -j4
+#   #         cd "$HIPCC_DIR"
+#   #         mkdir -p build; cd build
+#   #         cmake ..
+#   #         make -j4
     
-  #         cd "$CLR_DIR"
-  #         mkdir -p build; cd build
-  #         cmake -DHIP_COMMON_DIR=$HIP_DIR -DHIP_PLATFORM=amd -DCMAKE_PREFIX_PATH="/opt/rocm/" -DCMAKE_INSTALL_PREFIX=$PWD/install -DHIPCC_BIN_DIR=$HIPCC_DIR/build -DHIP_CATCH_TEST=0 -DCLR_BUILD_HIP=ON -DCLR_BUILD_OCL=OFF ..
-  #         make -j$(nproc)
-  #         echo "rocm" | sudo -S make install
+#   #         cd "$CLR_DIR"
+#   #         mkdir -p build; cd build
+#   #         cmake -DHIP_COMMON_DIR=$HIP_DIR -DHIP_PLATFORM=amd -DCMAKE_PREFIX_PATH="/opt/rocm/" -DCMAKE_INSTALL_PREFIX=$PWD/install -DHIPCC_BIN_DIR=$HIPCC_DIR/build -DHIP_CATCH_TEST=0 -DCLR_BUILD_HIP=ON -DCLR_BUILD_OCL=OFF ..
+#   #         make -j$(nproc)
+#   #         echo "rocm" | sudo -S make install
 
-  - job: Running_Tests
-    displayName: "Running Tests"
-    # dependsOn: Building_HIP
-    pool: NV31
-    timeoutInMinutes: 60
-    continueOnError: true
-    steps:
-    - checkout: none
-    - script: |
-          pwd 
-          cd /home/rocm/AzureAgent/myagent/_work/13/s
-          export CLR_DIR="$(readlink -f clr)"
-          export HIP_DIR="$(readlink -f HIP)"
-          export HIP_OTHER="$(readlink -f hipother)"
-          export HIPCC_DIR="$(readlink -f HIPCC)"
-          export HIPTESTS_DIR="$(readlink -f hip-tests)"
-          cd "$HIPTESTS_DIR"
-          mkdir -p build; cd build
-          cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
-          make -j$(nproc) build_tests # build tests
-          cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded"
-          ls "$HIPTESTS_DIR"
-    # - task: PublishTestResults@2
-    #   inputs:
-    #     testResultsFormat: 'ctest'
-    #     testResultsFiles: ''
-    #   condition: succeededOrFailed()
-      displayName: 'Tests'
+#   - job: Running_Tests
+#     displayName: "Running Tests"
+#     # dependsOn: Building_HIP
+#     pool: NV31
+#     timeoutInMinutes: 60
+#     continueOnError: true
+#     steps:
+#     - checkout: none
+#     - script: |
+#           pwd 
+#           cd /home/rocm/AzureAgent/myagent/_work/13/s
+#           export CLR_DIR="$(readlink -f clr)"
+#           export HIP_DIR="$(readlink -f HIP)"
+#           export HIP_OTHER="$(readlink -f hipother)"
+#           export HIPCC_DIR="$(readlink -f HIPCC)"
+#           export HIPTESTS_DIR="$(readlink -f hip-tests)"
+#           cd "$HIPTESTS_DIR"
+#           mkdir -p build; cd build
+#           cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
+#           make -j$(nproc) build_tests # build tests
+#           cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded"
+#           ls "$HIPTESTS_DIR"
+#     # - task: PublishTestResults@2
+#     #   inputs:
+#     #     testResultsFormat: 'ctest'
+#     #     testResultsFiles: ''
+#     #   condition: succeededOrFailed()
+#       displayName: 'Tests'
     
 
 
 
-# pool: NV31
+pool: NV31
 
-# steps:
-# - checkout: self
-# - checkout: hip_repo
-# - checkout: hipcc_repo
-# - checkout: hipother_repo
-# - checkout: hip_tests
-# - script: |
+steps:
+- checkout: self
+- checkout: hip_repo
+- checkout: hipcc_repo
+- checkout: hipother_repo
+- checkout: hip_tests
+- script: |
     
-#     ls
-#     export CLR_DIR="$(readlink -f clr)"
-#     export HIP_DIR="$(readlink -f HIP)"
-#     export HIP_OTHER="$(readlink -f hipother)"
-#     export HIPCC_DIR="$(readlink -f HIPCC)"
-#     export HIPTESTS_DIR="$(readlink -f hip-tests)"
+    ls
+    pwd
+    export CLR_DIR="$(readlink -f clr)"
+    export HIP_DIR="$(readlink -f HIP)"
+    export HIP_OTHER="$(readlink -f hipother)"
+    export HIPCC_DIR="$(readlink -f HIPCC)"
+    export HIPTESTS_DIR="$(readlink -f hip-tests)"
   
-#     cd "$HIPCC_DIR"
-#     mkdir -p build; cd build
-#     cmake ..
-#     make -j4
+    cd "$HIPCC_DIR"
+    mkdir -p build; cd build
+    cmake ..
+    make -j4
     
-#     cd "$CLR_DIR"
-#     mkdir -p build; cd build
-#     cmake -DHIP_COMMON_DIR=$HIP_DIR -DHIP_PLATFORM=amd -DCMAKE_PREFIX_PATH="/opt/rocm/" -DCMAKE_INSTALL_PREFIX=$PWD/install -DHIPCC_BIN_DIR=$HIPCC_DIR/build -DHIP_CATCH_TEST=0 -DCLR_BUILD_HIP=ON -DCLR_BUILD_OCL=OFF ..
-#     make -j$(nproc)
-#     echo "rocm" | sudo -S make install
+    cd "$CLR_DIR"
+    mkdir -p build; cd build
+    cmake -DHIP_COMMON_DIR=$HIP_DIR -DHIP_PLATFORM=amd -DCMAKE_PREFIX_PATH="/opt/rocm/" -DCMAKE_INSTALL_PREFIX=$PWD/install -DHIPCC_BIN_DIR=$HIPCC_DIR/build -DHIP_CATCH_TEST=0 -DCLR_BUILD_HIP=ON -DCLR_BUILD_OCL=OFF ..
+    make -j$(nproc)
+    echo "rocm" | sudo -S make install
 
-#     cd "$HIPTESTS_DIR"
-#     mkdir -p build; cd build
-#     cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
-#     make -j$(nproc) build_tests # build tests
-#     cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" # to run all tests.
-# - task: PublishTestResults@2
-#   inputs:
-#     testResultsFormat: 'ctest'
-#     testResultsFiles: '$HIPTESTS_DIR"/build/catch_tests/Testing/Temporary/LastTest.log' 
-#   condition: succeededOrFailed()
-#   displayName: 'Building HIP'
+    cd "$HIPTESTS_DIR"
+    mkdir -p build; cd build
+    cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
+    make -j$(nproc) build_tests # build tests
+    cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" # to run all tests.
+    pwd
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'ctest'
+    testResultsFiles: '$HIPTESTS_DIR"/build/catch_tests/Testing/Temporary/LastTest.log' 
+  condition: succeededOrFailed()
+  displayName: 'Building HIP'
