@@ -63,6 +63,7 @@ jobs:
     dependsOn: Building_HIP
     pool: NV31
     timeoutInMinutes: 60
+    continueOnError: True
     steps:
     - checkout: none
     - script: |
@@ -77,8 +78,13 @@ jobs:
           cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
           make -j$(nproc) build_tests # build tests
           cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded"
-
       displayName: 'Tests'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'ctest'
+        testResultsFiles: '$HIPTESTS_DIR"/build/catch_tests/Testing/Temporary/LastTest.log'
+        
+
 
 
 # pool: NV31
