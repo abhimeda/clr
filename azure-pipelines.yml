@@ -81,7 +81,7 @@ jobs:
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'ctest'
-              testResultsFiles: 'hip-tests/build/Testing/Temporary/*.log'
+              testResultsFiles: ':~/AzureAgent/myagent/_work/13/s/hip-tests/build/catch_tests/Testing/Temporary/*.log'
       condition: succeededOrFailed()
       displayName: 'Tests'
     
