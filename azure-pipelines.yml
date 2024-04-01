@@ -138,11 +138,11 @@ steps:
     cd "$HIPTESTS_DIR"
     cd build
     cd catch_tests
-    ctest -O testoutput.log -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" --output-on-failure # to run all tests.
+    ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" --output-on-failure --overwrite BuildDirectory=. --output-junit hiptest_output.xml # to run all tests.
   displayName: 'run tests'
 - task: PublishTestResults@2
   inputs:
-    testResultsFormat: 'ctest'
-    testResultsFiles: '**/catch_tests/testoutput.log' 
+    testResultsFormat: 'junit'
+    testResultsFiles: '**/catch_tests/hiptest_output.xml' 
   condition: succeededOrFailed()
   displayName: 'HIP Catch Test Results'
