@@ -66,25 +66,25 @@ jobs:
     continueOnError: true
     steps:
     - checkout: none
-    # - script: |
-    #       pwd 
-    #       cd /home/rocm/AzureAgent/myagent/_work/13/s
-    #       export CLR_DIR="$(readlink -f clr)"
-    #       export HIP_DIR="$(readlink -f HIP)"
-    #       export HIP_OTHER="$(readlink -f hipother)"
-    #       export HIPCC_DIR="$(readlink -f HIPCC)"
-    #       export HIPTESTS_DIR="$(readlink -f hip-tests)"
-    #       cd "$HIPTESTS_DIR"
-    #       mkdir -p build; cd build
-    #       cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
-    #       make -j$(nproc) build_tests # build tests
-    #       cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" -O "$HIPTESTS_DIR"/output.txt
-    #       ls "$HIPTESTS_DIR"
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'ctest'
-        testResultsFiles: '**/output.txt'
-      condition: succeededOrFailed()
+    - script: |
+          pwd 
+          cd /home/rocm/AzureAgent/myagent/_work/13/s
+          export CLR_DIR="$(readlink -f clr)"
+          export HIP_DIR="$(readlink -f HIP)"
+          export HIP_OTHER="$(readlink -f hipother)"
+          export HIPCC_DIR="$(readlink -f HIPCC)"
+          export HIPTESTS_DIR="$(readlink -f hip-tests)"
+          cd "$HIPTESTS_DIR"
+          mkdir -p build; cd build
+          cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
+          make -j$(nproc) build_tests # build tests
+          cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded"
+          ls "$HIPTESTS_DIR"
+    # - task: PublishTestResults@2
+    #   inputs:
+    #     testResultsFormat: 'ctest'
+    #     testResultsFiles: ''
+    #   condition: succeededOrFailed()
       displayName: 'Tests'
     
 
