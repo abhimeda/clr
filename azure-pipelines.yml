@@ -123,7 +123,7 @@ steps:
     mkdir -p build; cd build
     cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
     make -j$(nproc) build_tests # build tests
-    cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" # to run all tests.
+    cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" --output-on-failure # to run all tests.
     pwd
 - task: PublishTestResults@2
   inputs:
