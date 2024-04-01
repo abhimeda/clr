@@ -125,9 +125,10 @@ steps:
 #    make -j$(nproc) build_tests # build tests
 #    cd catch_tests && ctest -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" --output-on-failure # to run all tests.
 #    pwd
+- script: pwd
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'ctest'
-    testResultsFiles: '**/build/catch_tests/testoutput.log' 
+    testResultsFiles: '**/catch_tests/testoutput.log' 
   condition: succeededOrFailed()
   displayName: 'HIP Catch Test Results'
