@@ -83,7 +83,7 @@ jobs:
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'ctest'
-        testResultsFiles: '13/s/hip-tests/output.txt'
+        testResultsFiles: '**/output.txt'
       condition: succeededOrFailed()
       displayName: 'Tests'
     
