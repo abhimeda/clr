@@ -105,22 +105,34 @@ steps:
     export HIP_OTHER="$(readlink -f hipother)"
     export HIPCC_DIR="$(readlink -f HIPCC)"
     export HIPTESTS_DIR="$(readlink -f hip-tests)"
-- script: |
     cd "$HIPCC_DIR"
     mkdir -p build; cd build
     cmake ..
     make -j4
+  displayName: 'build hipcc'
 - script: |
+    export CLR_DIR="$(readlink -f clr)"
+    export HIP_DIR="$(readlink -f HIP)"
+    export HIP_OTHER="$(readlink -f hipother)"
+    export HIPCC_DIR="$(readlink -f HIPCC)"
+    export HIPTESTS_DIR="$(readlink -f hip-tests)"
     cd "$CLR_DIR"
     mkdir -p build; cd build
     cmake -DHIP_COMMON_DIR=$HIP_DIR -DHIP_PLATFORM=amd -DCMAKE_PREFIX_PATH="/opt/rocm/" -DCMAKE_INSTALL_PREFIX=$PWD/install -DHIPCC_BIN_DIR=$HIPCC_DIR/build -DHIP_CATCH_TEST=0 -DCLR_BUILD_HIP=ON -DCLR_BUILD_OCL=OFF ..
     make -j$(nproc)
     echo "rocm" | sudo -S make install
+  displayName: 'build and install clr'
 - script: |
+    export CLR_DIR="$(readlink -f clr)"
+    export HIP_DIR="$(readlink -f HIP)"
+    export HIP_OTHER="$(readlink -f hipother)"
+    export HIPCC_DIR="$(readlink -f HIPCC)"
+    export HIPTESTS_DIR="$(readlink -f hip-tests)"
     cd "$HIPTESTS_DIR"
     mkdir -p build; cd build
     cmake ../catch -DHIP_PLATFORM=amd -DHIP_PATH=$CLR_DIR/build/install # or any path where HIP is installed, for example, /opt/rocm.
     make -j$(nproc) build_tests # build tests
+  displayName: 'build tests'
 - script: |
     cd catch_tests
     ctest -O testoutput.log -E "Unit_hipGetDeviceProperties_ArchPropertiesTst|Unit_hipGetSetDevice_MultiThreaded" --output-on-failure # to run all tests.
