@@ -81,7 +81,7 @@ jobs:
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'ctest'
-        testResultsFiles: 'hip-tests/build/Testing/*/Test.xml'
+        testResultsFiles: 'hip-tests/build/Testing/Temporary/LastTest.log'
       condition: succeededOrFailed()
       displayName: 'Tests'
     
