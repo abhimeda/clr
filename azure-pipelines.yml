@@ -63,7 +63,7 @@ jobs:
     dependsOn: Building_HIP
     pool: NV31
     timeoutInMinutes: 60
-    continueOnError: True
+    continueOnError: true
     steps:
     - checkout: none
     - script: |
