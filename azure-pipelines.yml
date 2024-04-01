@@ -81,7 +81,7 @@ jobs:
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'ctest'
-        testResultsFiles: '$HIPTESTS_DIR"/build/catch_tests/Testing/Temporary/LastTest.log'
+        testResultsFiles: 'hip-tests/build/catch_tests/Testing/Temporary/LastTest.log'
       condition: succeededOrFailed()
       displayName: 'Tests'
     
